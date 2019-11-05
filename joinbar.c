@@ -11,13 +11,13 @@
 #define POSTFIX_STR "]\n"
 #define SEPARATOR_STR ",\n"
 
-static int r_status(const char *scmd) {
+static int run_status(const char *scmd) {
   int pfd[2];
 
   pipe(pfd);
 
   if (fork()) {
-    // Parent
+    /* Parent */
     close(pfd[1]);
 
     /* Read VERSION, [ and \n */
@@ -34,7 +34,7 @@ static int r_status(const char *scmd) {
 
     return pfd[0];
   } else {
-    // Child
+    /* Child */
     close(pfd[0]);
     dup2(pfd[1], 1);
     close(pfd[1]);
@@ -91,7 +91,7 @@ int main(int argc, char **argv) {
     fjo[i] = NULL;
 
   for (i = 0; i < argc - 1; ++i) {
-    fds[i].fd = r_status(argv[i + 1]);
+    fds[i].fd = run_status(argv[i + 1]);
     fds[i].events = POLLIN;
   }
 
