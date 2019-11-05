@@ -97,7 +97,8 @@ int main(int argc, char **argv) {
     }
 
     rjo = merge(fjo, argc - 1);
-    printf("%s,\n", json_object_to_json_string(rjo));
+    printf("%s\n,\n", json_object_get_string(rjo));
+    fflush(stdout);
   }
 
   return 0;
