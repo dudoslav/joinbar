@@ -84,8 +84,9 @@ int main(int argc, char **argv) {
   int i;
   size_t l;
 
-  write(0, VERSION_STR, sizeof(VERSION_STR));
-  write(0, PREFIX_STR, sizeof(PREFIX_STR));
+  write(1, VERSION_STR, sizeof(VERSION_STR) - 1);
+  write(1, PREFIX_STR, sizeof(PREFIX_STR) - 1);
+  fsync(1);
 
   for (i = 0; i < argc - 1; ++i)
     fjo[i] = NULL;
@@ -106,12 +107,13 @@ int main(int argc, char **argv) {
 
     rjo = merge(fjo, argc - 1);
     json = json_object_to_json_string_length(rjo, JSON_C_TO_STRING_PLAIN, &l);
-    write(0, json, l);
-    write(0, SEPARATOR_STR, sizeof(SEPARATOR_STR));
+    write(1, json, l);
+    write(1, SEPARATOR_STR, sizeof(SEPARATOR_STR) - 1);
+    fsync(1);
     json_object_put(rjo);
   }
 
-  write(0, POSTFIX_STR, sizeof(POSTFIX_STR));
+  write(0, POSTFIX_STR, sizeof(POSTFIX_STR) - 1);
 
   return 0;
 }
